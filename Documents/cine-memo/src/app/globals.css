@@ -1,0 +1,268 @@
+@import "tailwindcss";
+
+/* ── Design Tokens ── */
+:root {
+  --cinema-black: #0a0a0f;
+  --cinema-dark: #12121a;
+  --cinema-surface: #1a1a2e;
+  --cinema-card: #16213e;
+  --cinema-border: rgba(255, 255, 255, 0.06);
+  --cinema-glow: rgba(124, 58, 237, 0.5);
+  --cinema-gold: #f59e0b;
+  --cinema-accent: #8b5cf6;
+  --cinema-accent-light: #a78bfa;
+  --cinema-green: #10b981;
+  --cinema-blue: #3b82f6;
+  --cinema-red: #ef4444;
+  --cinema-amber: #f59e0b;
+  --glass-bg: rgba(26, 26, 46, 0.6);
+  --glass-border: rgba(255, 255, 255, 0.08);
+  --glass-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+}
+
+/* ── Base Styles ── */
+html {
+  color-scheme: dark;
+}
+
+body {
+  background: var(--cinema-black);
+  color: #e2e8f0;
+  font-family: "Inter", system-ui, sans-serif;
+}
+
+/* ── Glassmorphism Utility ── */
+.glass {
+  background: var(--glass-bg);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid var(--glass-border);
+  box-shadow: var(--glass-shadow);
+}
+
+.glass-strong {
+  background: rgba(26, 26, 46, 0.85);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.6);
+}
+
+/* ── Glow Effects ── */
+.glow-purple {
+  box-shadow: 0 0 20px rgba(139, 92, 246, 0.3),
+    0 0 60px rgba(139, 92, 246, 0.1);
+}
+
+.glow-gold {
+  box-shadow: 0 0 20px rgba(245, 158, 11, 0.3),
+    0 0 60px rgba(245, 158, 11, 0.1);
+}
+
+/* ── Series Card 3D ── */
+.series-card {
+  perspective: 1000px;
+  transform-style: preserve-3d;
+}
+
+.series-card-inner {
+  transition: transform 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94),
+    box-shadow 0.4s ease;
+  transform-style: preserve-3d;
+  will-change: transform;
+}
+
+.series-card:hover .series-card-inner {
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5),
+    0 0 30px rgba(139, 92, 246, 0.2);
+}
+
+/* ── Gradient Overlays ── */
+.gradient-cinema {
+  background: linear-gradient(
+    135deg,
+    rgba(139, 92, 246, 0.15) 0%,
+    rgba(59, 130, 246, 0.1) 50%,
+    rgba(16, 185, 129, 0.05) 100%
+  );
+}
+
+.gradient-overlay-bottom {
+  background: linear-gradient(
+    to top,
+    rgba(10, 10, 15, 0.95) 0%,
+    rgba(10, 10, 15, 0.7) 30%,
+    rgba(10, 10, 15, 0.3) 60%,
+    transparent 100%
+  );
+}
+
+.gradient-overlay-full {
+  background: linear-gradient(
+    to top,
+    rgba(10, 10, 15, 1) 0%,
+    rgba(10, 10, 15, 0.8) 40%,
+    rgba(10, 10, 15, 0.4) 70%,
+    rgba(10, 10, 15, 0.2) 100%
+  );
+}
+
+/* ── Spoiler Blur ── */
+.spoil-blur {
+  filter: blur(12px);
+  user-select: none;
+  pointer-events: none;
+  transition: filter 0.3s ease;
+}
+
+.spoil-container {
+  position: relative;
+  overflow: hidden;
+}
+
+.spoil-overlay {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 10;
+  cursor: not-allowed;
+}
+
+/* ── Scrollbar ── */
+::-webkit-scrollbar {
+  width: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--cinema-dark);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--cinema-surface);
+  border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--cinema-accent);
+}
+
+/* ── Animations ── */
+@keyframes float {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-10px); }
+}
+
+@keyframes pulse-glow {
+  0%, 100% { opacity: 0.5; }
+  50% { opacity: 1; }
+}
+
+@keyframes shimmer {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+
+@keyframes shake {
+  0%, 100% { transform: translateX(0); }
+  10%, 30%, 50%, 70%, 90% { transform: translateX(-4px); }
+  20%, 40%, 60%, 80% { transform: translateX(4px); }
+}
+
+.animate-float {
+  animation: float 6s ease-in-out infinite;
+}
+
+.animate-pulse-glow {
+  animation: pulse-glow 2s ease-in-out infinite;
+}
+
+.animate-shimmer {
+  background: linear-gradient(
+    90deg,
+    var(--cinema-surface) 25%,
+    var(--cinema-card) 50%,
+    var(--cinema-surface) 75%
+  );
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite;
+}
+
+.animate-shake {
+  animation: shake 0.5s ease-in-out;
+}
+
+/* ── Status Badges ── */
+.badge-watched {
+  background: rgba(16, 185, 129, 0.15);
+  color: #34d399;
+  border: 1px solid rgba(16, 185, 129, 0.3);
+}
+
+.badge-watching {
+  background: rgba(59, 130, 246, 0.15);
+  color: #60a5fa;
+  border: 1px solid rgba(59, 130, 246, 0.3);
+}
+
+.badge-to-watch {
+  background: rgba(245, 158, 11, 0.15);
+  color: #fbbf24;
+  border: 1px solid rgba(245, 158, 11, 0.3);
+}
+
+/* ── Cinema Background Particles ── */
+.cinema-bg {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  overflow: hidden;
+}
+
+.cinema-bg::before {
+  content: "";
+  position: absolute;
+  width: 600px;
+  height: 600px;
+  background: radial-gradient(
+    circle,
+    rgba(139, 92, 246, 0.08) 0%,
+    transparent 70%
+  );
+  top: -200px;
+  right: -200px;
+  animation: float 20s ease-in-out infinite;
+}
+
+.cinema-bg::after {
+  content: "";
+  position: absolute;
+  width: 500px;
+  height: 500px;
+  background: radial-gradient(
+    circle,
+    rgba(59, 130, 246, 0.06) 0%,
+    transparent 70%
+  );
+  bottom: -150px;
+  left: -150px;
+  animation: float 25s ease-in-out infinite reverse;
+}
+
+/* ── Tone Selector Cards ── */
+.tone-card {
+  transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  cursor: pointer;
+}
+
+.tone-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.4);
+}
+
+.tone-card.selected {
+  border-color: var(--cinema-accent);
+  box-shadow: 0 0 20px rgba(139, 92, 246, 0.3),
+    inset 0 0 20px rgba(139, 92, 246, 0.05);
+}

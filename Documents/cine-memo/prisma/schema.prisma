@@ -1,0 +1,68 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+}
+
+model User {
+  id           String    @id @default(cuid())
+  email        String    @unique
+  name         String
+  passwordHash String
+  avatarUrl    String?
+  aiTone       String    @default("sarcastique")
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime  @updatedAt
+
+  series       UserSeries[]
+  sharedProfiles SharedProfile[]
+}
+
+model UserSeries {
+  id             String   @id @default(cuid())
+  userId         String
+  tmdbSeriesId   Int
+  seriesName     String
+  posterPath     String?
+  status         String   @default("TO_WATCH") // WATCHING | WATCHED | TO_WATCH
+  currentSeason  Int      @default(0)
+  currentEpisode Int      @default(0)
+  totalSeasons   Int      @default(0)
+  rating         Float?
+  addedAt        DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+
+  user      User        @relation(fields: [userId], references: [id], onDelete: Cascade)
+  summaries AISummary[]
+
+  @@unique([userId, tmdbSeriesId])
+  @@index([userId])
+}
+
+model AISummary {
+  id           String   @id @default(cuid())
+  userSeriesId String
+  seasonNumber Int
+  tone         String
+  summary      String
+  generatedAt  DateTime @default(now())
+
+  userSeries UserSeries @relation(fields: [userSeriesId], references: [id], onDelete: Cascade)
+
+  @@unique([userSeriesId, seasonNumber, tone])
+  @@index([userSeriesId])
+}
+
+model SharedProfile {
+  id         String   @id @default(cuid())
+  ownerId    String
+  shareToken String   @unique @default(cuid())
+  isPublic   Boolean  @default(true)
+  createdAt  DateTime @default(now())
+
+  owner User @relation(fields: [ownerId], references: [id], onDelete: Cascade)
+
+  @@index([ownerId])
+}

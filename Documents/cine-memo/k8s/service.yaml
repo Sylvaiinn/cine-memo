@@ -1,0 +1,11 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: cine-memo
+  namespace: cine-memo
+spec:
+  selector:
+    app: cine-memo
+  ports:
+    - port: 80
+      targetPort: 3000

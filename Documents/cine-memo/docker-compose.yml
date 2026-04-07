@@ -1,0 +1,21 @@
+services:
+  postgres:
+    image: postgres:16-alpine
+    container_name: cinememo-db
+    environment:
+      POSTGRES_DB: cinememo
+      POSTGRES_USER: cinememo
+      POSTGRES_PASSWORD: cinememo
+    ports:
+      - "5432:5432"
+    volumes:
+      - cinememo_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U cinememo -d cinememo"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+    restart: unless-stopped
+
+volumes:
+  cinememo_data:
